@@ -7,12 +7,6 @@ use Test::More tests => 5;
 
 use_ok( 'Devel::Timer');
 
-my $VERBOSE = 0;
-$VERBOSE++ if (grep(/-v/, @ARGV));
-
-#use Devel::Timer;
-# use MyTimer;
-
 {
     close STDERR;
     my $stderr;
@@ -22,6 +16,10 @@ $VERBOSE++ if (grep(/-v/, @ARGV));
     # my $t = MyTimer->new();
 
     $t->mark("first db query");
+
+    ## do some more work
+    select(undef, undef, undef, 0.7);
+    $t->mark();
 
     ## do some work
     select(undef, undef, undef, 0.05);
@@ -33,11 +31,12 @@ $VERBOSE++ if (grep(/-v/, @ARGV));
 
     $t->report();
 
-    print "[output]\n$stderr" if ($VERBOSE);
-
     like($stderr, qr/Total time/);
     like($stderr, qr/first db query/);
     like($stderr, qr/second db query/);
     like($stderr, qr/second db query -> END/);
+    #diag $stderr;
 }
+
+# use MyTimer;
 

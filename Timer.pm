@@ -1,11 +1,10 @@
-
 package Devel::Timer;
-
-use vars qw($VERSION);
 use strict;
+use warnings;
+
 use Time::HiRes();
 
-$VERSION = "0.02";
+our $VERSION = "0.02";
 
 ##
 ## instantiate (and initialize) timer object
@@ -150,7 +149,7 @@ Devel::Timer - Track and report execution time for parts of code
 
   use Devel::Timer;
 
-  my $t = new Devel::Timer();
+  my $t = Devel::Timer->new();
 
   $t->mark("first db query");
 
@@ -174,7 +173,7 @@ First, the Devel::Timer module is used and instantiated.
 
   use Devel::Timer;
 
-  my $t = new Devel::Timer();
+  my $t = Devel::Timer->new();
 
 Second, markers are placed before and after pieces of code that need to be
 timed.  For this example, we are profiling the methods get_user_score() and
@@ -238,7 +237,7 @@ You would then use the new module MyTimer exactly as you would use
 Devel::Timer.
 
   use MyTimer;
-  my $t = new MyTimer();
+  my $t = MyTimer->new();
   $t->mark("about to do x");
   $t->mark("about to do y");
   $t->mark("done y");

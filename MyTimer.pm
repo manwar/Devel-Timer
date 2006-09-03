@@ -13,17 +13,17 @@ use vars qw(@ISA);
 sub initialize
 {        
     my $log = "/tmp/timer.log";
-    open(LOG, ">>$log") or die("Unable to open [$log] for writing.");
+    open(my $fh, '>>', $log) or die("Unable to open [$log] for writing.");
 }
 
 sub print
 {
     my($self, $msg) = @_;
-    print LOG $msg . "\n";
+    print {$fh} $msg . "\n";
 }
 
 sub close
 {
-    close LOG;
+    close $fh;
 }
 

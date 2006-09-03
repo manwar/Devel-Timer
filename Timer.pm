@@ -5,7 +5,7 @@ use vars qw($VERSION);
 use strict;
 use Time::HiRes();
 
-$VERSION = "0.01";
+$VERSION = "0.02";
 
 ##
 ## instantiate (and initialize) timer object
@@ -251,4 +251,8 @@ Time::HiRes
 =head1 AUTHOR
 
   Jason Moore - jmoore@sober.com
+
+  Maintainer: Gabor Szabo - gabor@pti.co.il
+
+=cut
 

@@ -5,10 +5,13 @@ README
 COPYING
 Build.PL
 Makefile.PL
-MyTimer.pm
+
 
 lib/Devel/Timer.pm
 
-t/test.t
 t/pod.t
 t/pod-coverage.t
+t/test.t
+t/my-timer.t
+
+eg/MyTimer.pm

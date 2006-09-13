@@ -4,9 +4,8 @@ use Module::Build;
 
 my $builder = Module::Build->new(
     module_name         => 'Devel::Timer',
-#    license             => 'perl', #???
+    license             => 'perl',
     dist_author         => 'Gabor Szabo <gabor@pti.co.il>',
-    dist_version_from   => 'Timer.pm',
     create_makefile_pl  => 'traditional',
     create_readme       => 1,
     requires            => {

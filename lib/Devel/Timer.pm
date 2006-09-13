@@ -206,6 +206,34 @@ you can override the print() method.  The initialize() and shutdown() methods
 can also overridden if you want to open and close log files or database
 connections.
 
+=head1 Methods
+
+=head2 new
+
+Create a new instance. No parameters are processed.
+
+=head2 initialize
+
+Empty method. Can be implemented in the subclass.
+
+=head2 mark(NAME)
+
+Set a timestamp with a NAME.
+
+=head2 print
+
+Prints to the standar error. Can be overridden in the subclass.
+
+=head2 report
+
+Generates the report. Prints using the B<print> method.
+
+=head2 shutdown
+
+Empty method. Can be implemented in subclass.
+
+=head1 Subclassing
+
 e.g.
 
 package MyTimer;
@@ -246,6 +274,13 @@ Devel::Timer.
 =head1 SEE ALSO
 
 Time::HiRes
+
+=head1 Copyright
+
+Jason Moore
+
+This is free software.
+It is licensed under the same terms as Perl itself.
 
 =head1 AUTHOR
 

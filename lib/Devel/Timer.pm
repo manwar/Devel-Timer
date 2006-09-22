@@ -4,7 +4,7 @@ use warnings;
 
 use Time::HiRes();
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 ##
 ## instantiate (and initialize) timer object

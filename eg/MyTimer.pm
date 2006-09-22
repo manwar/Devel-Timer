@@ -15,7 +15,7 @@ use vars qw(@ISA);
 sub initialize {
     my ($self) = @_;
 
-    my $log = "/tmp/timer.log";
+    my $log = "timer.log";
     open(my $fh, '>>', $log) or die("Unable to open [$log] for writing.");
     $self->{MyTimer_fh} = $fh;
 }

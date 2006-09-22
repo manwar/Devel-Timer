@@ -1,11 +1,13 @@
 Revision history for Perl extension Devel::Timer.
 
 
-0.03
+0.03 2006 September 22
     - use warnings
     - move module into lib directory
     - add license
     - add some documentation
+    - move MyTimer.pm to eg/ directory
+    - add tests fr MyTimer subclassing Devel::Timer
 
 0.02 2006 September 3
     - Maintainer change -> Jay Hannah and Gabor Szabo

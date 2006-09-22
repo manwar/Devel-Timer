@@ -10,9 +10,8 @@ our $VERSION = "0.03";
 ## instantiate (and initialize) timer object
 ##
 
-sub new
-{
-    my $class = shift;
+sub new {
+    my ($class) = @_;
     my $self = {    
                 times => [],
                 count => 0,
@@ -32,8 +31,7 @@ sub new
 ## mark time (w/ optional label)
 ##
 
-sub mark
-{
+sub mark {
     my($self, $label) = @_; 
 
     $label = '' if (!defined($label));
@@ -41,12 +39,10 @@ sub mark
     my $t = [ Time::HiRes::gettimeofday() ];
 
     my $last_time;
-    if ($self->{count} == 0)        ## first time has no last time
-    {
+    if ($self->{count} == 0) {       ## first time has no last time
         $last_time = $t;
     }
-    else
-    {
+    else {
         $last_time = $self->{times}->[($self->{count}-1)];
     }
 
@@ -56,9 +52,10 @@ sub mark
 
     ## save time interval 
 
-    my $interval = {    value => Time::HiRes::tv_interval($last_time, $t),
-                        index => $self->{count},
-                        };
+    my $interval = {
+                    value => Time::HiRes::tv_interval($last_time, $t),
+                    index => $self->{count},
+                   };
     push(@{$self->{intervals}}, $interval);
 
     ## save label in separate hash for fast lookup
@@ -73,9 +70,8 @@ sub mark
 ## output report to error log
 ##
 
-sub report
-{
-    my $self = shift;
+sub report {
+    my ($self, %args) = @_;
 
     ## calculate total time (start time vs last time)
 
@@ -83,6 +79,26 @@ sub report
 
     $self->print("\n");
     $self->print(ref($self) . " Report -- Total time: " . sprintf("%.4f", $total_time) . " secs");
+    if ($args{collapse}) {
+       $self->_calculate_collapsed;
+
+       $self->print("Count     Time    Percent");
+       $self->print("----------------------------------------------");
+
+       my $c = $self->{collapsed};
+       my $sort_by = $args{sort_by} || "time";
+       my @labels = sort { $c->{$b}->{$sort_by} <=> $c->{$a}->{$sort_by} } keys %$c;
+       foreach my $label (@labels) {
+           my $count = $c->{$label}->{count};
+           my $time = $c->{$label}->{time};
+           my $msg = sprintf("%8s  %.4f  %5.2f%%  %s",
+               ($count, $time, (($time/$total_time)*100), $label));
+           $self->print($msg);
+       }
+       return 1;
+    }
+
+
     $self->print("Interval  Time    Percent");
     $self->print("----------------------------------------------");
 
@@ -110,6 +126,20 @@ sub report
     }
 }
 
+sub _calculate_collapsed {
+    my ($self) = @_;
+
+    my %collapsed;
+    foreach my $i (0 .. $self->{count} - 2) {
+        my $label = $self->{label}->{$i} . ' -> ' . $self->{label}->{$i + 1};
+        my $time = Time::HiRes::tv_interval($self->{times}->[$i], $self->{times}->[$i + 1]);
+        $collapsed{$label}{time} += $time;
+        $collapsed{$label}{count}++;
+    }
+    $self->{collapsed} = \%collapsed;
+}
+
+
 ## output methods
 ## note: if you want to send output to somewhere other than stderr,
 ##       you can override the print() method below.  The initialize()
@@ -117,22 +147,18 @@ sub report
 ##       or connect to a database before printing the report.
 ##       See pod for an example.
 
-sub initialize
-{
+sub initialize {
 }
 
-sub print
-{
+sub print {
     my($self, $msg) = @_;
     print STDERR $msg . "\n";
 }
 
-sub shutdown
-{
+sub shutdown {
 }
 
-sub DESTROY
-{
+sub DESTROY {
     my $self = shift;
     $self->shutdown();
 }
@@ -227,6 +253,11 @@ Prints to the standar error. Can be overridden in the subclass.
 =head2 report
 
 Generates the report. Prints using the B<print> method.
+
+
+collaps
+
+sort_by => time   
 
 =head2 shutdown
 

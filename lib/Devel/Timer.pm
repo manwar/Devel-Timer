@@ -110,8 +110,7 @@ sub report {
     ## report of each time space between marks
     ##
 
-    my $i;
-    for $i (@{$self->{intervals}})
+    for my $i (@{$self->{intervals}})
     {
         ## skip first time (to make an interval, 
         ## compare the current time with the previous one)

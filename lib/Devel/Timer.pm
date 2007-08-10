@@ -253,10 +253,52 @@ Prints to the standar error. Can be overridden in the subclass.
 
 Generates the report. Prints using the B<print> method.
 
+The standard report() looks like this:
 
-collaps
+  $t->report;
 
-sort_by => time   
+  Devel::Timer Report -- Total time: 7.0028 secs
+  Interval  Time    Percent
+  ----------------------------------------------
+  05 -> 06  3.0006  42.85%  something begin -> something end
+  03 -> 04  2.0007  28.57%  something begin -> something end
+  06 -> 07  1.0009  14.29%  something end -> END
+  01 -> 02  1.0004  14.29%  something begin -> something end
+  00 -> 01  0.0000   0.00%  INIT -> something begin
+  04 -> 05  0.0000   0.00%  something end -> something begin
+  02 -> 03  0.0000   0.00%  something end -> something begin
+
+Which is great for small or non-iterative programs, but if there's
+hundreds of loops of "something begin -> something end" the report gets
+very painful very quickly. :)
+
+In that scenario you might find B<collapse> useful:
+
+  $t->report(collapse => 1);
+
+  Devel::Timer Report -- Total time: 7.0028 secs
+  Count     Time    Percent
+  ----------------------------------------------
+         3  6.0018  85.71%  something begin -> something end
+         1  1.0009  14.29%  something end -> END
+         2  0.0001   0.00%  something end -> something begin
+         1  0.0000   0.00%  INIT -> something begin
+
+The stats for all combinations of labels are added together. 
+
+We also accept a B<sort_by> parameter. By default the report is sorted by total
+time spent (like the default report()), but you can sort by count
+instead if you want:
+
+  $t->report(collapse => 1, sort_by => 'count');
+
+  Devel::Timer Report -- Total time: 7.0028 secs
+  Count     Time    Percent
+  ----------------------------------------------
+         3  6.0018  85.71%  something begin -> something end
+         2  0.0001   0.00%  something end -> something begin
+         1  0.0000   0.00%  INIT -> something begin
+         1  1.0009  14.29%  something end -> END
 
 =head2 shutdown
 
@@ -317,6 +359,8 @@ It is licensed under the same terms as Perl itself.
   Jason Moore - jmoore@sober.com
 
   Maintainer: Gabor Szabo - gabor@pti.co.il
+
+  Honorable mention: Jay Hannah - jay@jays.net
 
 =cut
 

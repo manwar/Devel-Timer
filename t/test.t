@@ -75,6 +75,38 @@ BEGIN { $tests += 1; }
     BEGIN { $tests += 7; }
 }
 
+{
+    my $t = _process();
+    my ($time, $percent, $count);
+    ok(($time, $percent, $count) = $t->get_stats("A", "B"),   "get_stats('A', 'B')");
+    cmp_ok($time,     '>=', 0.7,   '$time');
+    cmp_ok($time,     '<=', 0.8,   '$time');
+    cmp_ok($percent,  '>=', 60,    '$percent');
+    cmp_ok($percent,  '<=', 70,    '$percent');
+    cmp_ok($count,    '==', 3,     '$count');
+    ok(($time, $percent, $count) = $t->get_stats("B", "A"),   "get_stats('B', 'A')");
+    cmp_ok($time,     '>=', 0,     '$time');
+    cmp_ok($time,     '<=', 0.1,   '$time');
+    cmp_ok($percent,  '>=', 0,     '$percent');
+    cmp_ok($percent,  '<=', 10,    '$percent');
+    cmp_ok($count,    '==', 2,     '$count');
+    ok(($time, $percent, $count) = $t->get_stats("B", "C"),   "get_stats('B', 'C')");
+    cmp_ok($time,     '>=', 0.3,   '$time');
+    cmp_ok($time,     '<=', 0.4,   '$time');
+    cmp_ok($percent,  '>=', 25,    '$percent');
+    cmp_ok($percent,  '<=', 32,    '$percent');
+    cmp_ok($count,    '==', 1,     '$count');
+    ok(($time, $percent, $count) = $t->get_stats("INIT", "A"), "get_stats('INIT', 'A')");
+    cmp_ok($time,     '>=', 0,     '$time');
+    cmp_ok($time,     '<=', 0.1,   '$time');
+    cmp_ok($percent,  '>=', 0,     '$percent');
+    cmp_ok($percent,  '<=', 5,     '$percent');
+    cmp_ok($count,    '==', 1,     '$count');
+    #diag $stderr;
+    BEGIN { $tests += 24; }
+}
+
+
 
 sub _process {
     my $t = Devel::Timer->new();

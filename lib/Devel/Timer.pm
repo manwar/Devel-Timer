@@ -138,6 +138,18 @@ sub _calculate_collapsed {
     $self->{collapsed} = \%collapsed;
 }
 
+sub get_stats {
+    my ($self, $a, $b) = @_;
+    $self->_calculate_collapsed;
+    my $collapsed = $self->{collapsed};
+    my $total_time = Time::HiRes::tv_interval($self->{times}->[0], $self->{times}->[$self->{count}-1]);
+    my $label = "$a -> $b";
+    my $time =  $collapsed->{$label}->{time};
+    my $count = $collapsed->{$label}->{count};
+    return ($time, $time / $total_time * 100, $count);
+}
+
+
 
 ## output methods
 ## note: if you want to send output to somewhere other than stderr,
@@ -231,7 +243,7 @@ you can override the print() method.  The initialize() and shutdown() methods
 can also overridden if you want to open and close log files or database
 connections.
 
-=head1 Methods
+=head1 METHODS
 
 =head2 new
 
@@ -247,13 +259,11 @@ Set a timestamp with a NAME.
 
 =head2 print
 
-Prints to the standar error. Can be overridden in the subclass.
+Prints to STDERR. Can be overridden in the subclass.
 
 =head2 report
 
-Generates the report. Prints using the B<print> method.
-
-The standard report() looks like this:
+Prints the report to STDOUT.  By default report() looks like this:
 
   $t->report;
 
@@ -300,11 +310,30 @@ instead if you want:
          1  0.0000   0.00%  INIT -> something begin
          1  1.0009  14.29%  something end -> END
 
+=head2 get_stats
+
+Returns the accumulated statistics for a specific a combination of mark()'s that
+have occurred while your program ran. 
+These values are the exact same statistics that report() prints. get_stats()
+simply returns them to you so you can do something creative with them.
+
+For example, to get the cumulative stats for every time your program has 
+specifically moved from mark("X") to mark("Y"), you can run this:
+
+  my ($time, $percent, $count) = $t->get_stats("X", "Y");
+
+$time is the total number of seconds elapsed between "X" and "Y".
+
+$percent is the percentage of total program run time that you have spent between
+"X" and "Y".
+
+$count is the number of times your program has moved from "X" to "Y".
+
 =head2 shutdown
 
 Empty method. Can be implemented in subclass.
 
-=head1 Subclassing
+=head1 SUBCLASSING
 
 e.g.
 
@@ -343,11 +372,25 @@ Devel::Timer.
   $t->mark("done y");
   $t->report();
 
+=head1 TO DO 
+
+Devel::Timer does not currently do any reporting or statistics of any kind 
+based on nested trees of mark() calls. So if your program runs these mark() calls:
+
+  A 
+    B, C
+    B, C
+  D
+  E
+
+Devel::Timer never tells you anything about how much time you spent moving from
+A to D. Depth aware reporting might be an interesting project to tackle.
+
 =head1 SEE ALSO
 
 Time::HiRes
 
-=head1 Copyright
+=head1 COPYRIGHT
 
 Jason Moore
 
@@ -356,11 +399,9 @@ It is licensed under the same terms as Perl itself.
 
 =head1 AUTHOR
 
-  Jason Moore - jmoore@sober.com
-
-  Maintainer: Gabor Szabo - gabor@pti.co.il
-
-  Honorable mention: Jay Hannah - jay@jays.net
+  Author:      Jason Moore - jmoore@sober.com (no longer valid)
+  Maintainer:  Gabor Szabo - gabor@pti.co.il
+  Contributor: Jay Hannah  - jay@jays.net
 
 =cut
 

@@ -297,8 +297,8 @@ In that scenario you might find B<collapse> useful:
 The stats for all combinations of labels are added together. 
 
 We also accept a B<sort_by> parameter. By default the report is sorted by total
-time spent (like the default report()), but you can sort by count
-instead if you want:
+time spent descending (like the default report()), but you can sort by count
+descending instead if you want:
 
   $t->report(collapse => 1, sort_by => 'count');
 

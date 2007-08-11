@@ -76,22 +76,27 @@ BEGIN { $tests += 1; }
 }
 
 {
+    close STDERR;
+    my $stderr;
+    open STDERR, '>', \$stderr or die;
+
     my $t = _process();
+    $t->report(collapse => 1, sort_by => "count");
     my ($time, $percent, $count);
     ok(($time, $percent, $count) = $t->get_stats("A", "B"),   "get_stats('A', 'B')");
-    cmp_ok($time,     '>=', 0.7,   '$time');
+    cmp_ok($time,     '>=', 0.6,   '$time');
     cmp_ok($time,     '<=', 0.8,   '$time');
     cmp_ok($percent,  '>=', 60,    '$percent');
     cmp_ok($percent,  '<=', 70,    '$percent');
     cmp_ok($count,    '==', 3,     '$count');
     ok(($time, $percent, $count) = $t->get_stats("B", "A"),   "get_stats('B', 'A')");
     cmp_ok($time,     '>=', 0,     '$time');
-    cmp_ok($time,     '<=', 0.1,   '$time');
+    cmp_ok($time,     '<=', 0.15,  '$time');
     cmp_ok($percent,  '>=', 0,     '$percent');
     cmp_ok($percent,  '<=', 10,    '$percent');
     cmp_ok($count,    '==', 2,     '$count');
     ok(($time, $percent, $count) = $t->get_stats("B", "C"),   "get_stats('B', 'C')");
-    cmp_ok($time,     '>=', 0.3,   '$time');
+    cmp_ok($time,     '>=', 0.2,   '$time');
     cmp_ok($time,     '<=', 0.4,   '$time');
     cmp_ok($percent,  '>=', 25,    '$percent');
     cmp_ok($percent,  '<=', 32,    '$percent');

@@ -5,7 +5,8 @@ use 5.006;
 
 use Time::HiRes();
 
-our $VERSION = "0.04";
+our $VERSION = "0.05";
+## no critic (ProhibitAccessOfPrivateData )
 
 ##
 ## instantiate (and initialize) timer object

@@ -1,7 +1,11 @@
 Revision history for Perl extension Devel::Timer.
 
+0.05 2013 January 03
+    - Use Module::Install
+    - Convert to Github
+
 0.04 2007 August 12
-    - Apply changes of Jay Hannah 
+    - Apply changes of Jay Hannah
       - added collapse and sort_by arguments to report() method
       - added get_stats() method
 
@@ -20,5 +24,5 @@ Revision history for Perl extension Devel::Timer.
     - test pods
 
 0.01  Sun Feb 11 13:02:18 2001
-	- initial version
+    - initial version
 

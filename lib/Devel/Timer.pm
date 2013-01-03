@@ -13,7 +13,7 @@ our $VERSION = "0.04";
 
 sub new {
     my ($class) = @_;
-    my $self = {    
+    my $self = {
                 times => [],
                 count => 0,
                 label => {},        ## index:label
@@ -33,7 +33,7 @@ sub new {
 ##
 
 sub mark {
-    my($self, $label) = @_; 
+    my($self, $label) = @_;
 
     $label = '' if (!defined($label));
 
@@ -49,9 +49,9 @@ sub mark {
 
     ## save time for final report
 
-    push(@{$self->{times}}, $t);                
+    push(@{$self->{times}}, $t);
 
-    ## save time interval 
+    ## save time interval
 
     my $interval = {
                     value => Time::HiRes::tv_interval($last_time, $t),
@@ -113,13 +113,13 @@ sub report {
 
     for my $i (@{$self->{intervals}})
     {
-        ## skip first time (to make an interval, 
+        ## skip first time (to make an interval,
         ## compare the current time with the previous one)
 
         next if ($i->{index} == 0);
 
-        my $msg = sprintf("%02d -> %02d  %.4f  %5.2f%%  %s -> %s", 
-            ($i->{index}-1), $i->{index}, $i->{value}, (($i->{value}/$total_time)*100), 
+        my $msg = sprintf("%02d -> %02d  %.4f  %5.2f%%  %s -> %s",
+            ($i->{index}-1), $i->{index}, $i->{value}, (($i->{value}/$total_time)*100),
             $self->{label}->{($i->{index}-1)}, $self->{label}->{$i->{index}});
 
         $self->print($msg);
@@ -295,7 +295,7 @@ In that scenario you might find B<collapse> useful:
          2  0.0001   0.00%  something end -> something begin
          1  0.0000   0.00%  INIT -> something begin
 
-The stats for all combinations of labels are added together. 
+The stats for all combinations of labels are added together.
 
 We also accept a B<sort_by> parameter. By default the report is sorted by total
 time spent descending (like the default report()), but you can sort by count
@@ -314,11 +314,11 @@ descending instead if you want:
 =head2 get_stats
 
 Returns the accumulated statistics for a specific a combination of mark()'s that
-have occurred while your program ran. 
+have occurred while your program ran.
 These values are the exact same statistics that report() prints. get_stats()
 simply returns them to you so you can do something creative with them.
 
-For example, to get the cumulative stats for every time your program has 
+For example, to get the cumulative stats for every time your program has
 specifically moved from mark("X") to mark("Y"), you can run this:
 
   my ($time, $percent, $count) = $t->get_stats("X", "Y");
@@ -363,7 +363,7 @@ sub shutdown
     close LOG;
 }
 
-You would then use the new module MyTimer exactly as you would use 
+You would then use the new module MyTimer exactly as you would use
 Devel::Timer.
 
   use MyTimer;
@@ -373,12 +373,12 @@ Devel::Timer.
   $t->mark("done y");
   $t->report();
 
-=head1 TO DO 
+=head1 TO DO
 
-Devel::Timer does not currently do any reporting or statistics of any kind 
+Devel::Timer does not currently do any reporting or statistics of any kind
 based on nested trees of mark() calls. So if your program runs these mark() calls:
 
-  A 
+  A
     B, C
     B, C
   D

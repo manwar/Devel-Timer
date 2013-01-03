@@ -3,6 +3,8 @@ MYMETA.json
 MYMETA.yml
 Makefile
 Makefile.old
+MANIFEST
+MANIFEST.bak
 blib/
 inc/
 *.swp

@@ -1,6 +1,7 @@
 package Devel::Timer;
 use strict;
 use warnings;
+use 5.006;
 
 use Time::HiRes();
 

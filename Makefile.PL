@@ -8,7 +8,7 @@ all_from       'lib/Devel/Timer.pm';
 license        'perl';
 author         'Jason Moore';
 
-build_requires 'Test::More'                => '0.42';
+build_requires 'Test::More'                => '1.00';
 
 requires 'perl'         => '5.006';
 requires 'Time::HiRes'  => '0';

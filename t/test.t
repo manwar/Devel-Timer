@@ -5,12 +5,13 @@ use warnings;
 
 use Test::More;
 my $tests;
-plan tests => $tests;
+plan tests => 5;
 
 use_ok( 'Devel::Timer');
-BEGIN { $tests += 1; }
 
-{
+subtest simple => sub {
+    plan tests => 10;
+
     close STDERR;
     my $stderr;
     open STDERR, '>', \$stderr or die;
@@ -29,10 +30,11 @@ BEGIN { $tests += 1; }
     like(  $stderr, qr/06 -> 07 .* B -> C/,        "step 6");
     unlike($stderr, qr/07 -> 08/,                  "no step 7");
     #diag $stderr;
-    BEGIN { $tests += 10; }
-}
+};
 
-{
+subtest another => sub {
+    plan tests => 7;
+
     close STDERR;
     my $stderr;
     open STDERR, '>', \$stderr or die;
@@ -48,10 +50,11 @@ BEGIN { $tests += 1; }
     like(  $stderr, qr/A -> B.* B -> C.* B -> A.* INIT -> A/s, 
                                                    "order by time descending");
     #diag $stderr;
-    BEGIN { $tests += 7; }
-}
+};
 
-{
+subtest sort_by_count => sub {
+    plan tests => 7;
+
     close STDERR;
     my $stderr;
     open STDERR, '>', \$stderr or die;
@@ -72,10 +75,11 @@ BEGIN { $tests += 1; }
        ($stderr =~ /A -> B.* B -> A.* INIT -> A.* B -> C/s);
     ok($test, "sort by count");
     #diag $stderr;
-    BEGIN { $tests += 7; }
-}
+};
 
-{
+subtest process => sub {
+    plan tests => 24;
+
     close STDERR;
     my $stderr;
     open STDERR, '>', \$stderr or die;
@@ -108,8 +112,7 @@ BEGIN { $tests += 1; }
     cmp_ok($percent,  '<=', 5,     '$percent');
     cmp_ok($count,    '==', 1,     '$count');
     #diag $stderr;
-    BEGIN { $tests += 24; }
-}
+};
 
 
 

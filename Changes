@@ -1,5 +1,8 @@
 Revision history for Perl extension Devel::Timer.
 
+0.06 
+    - Use subtests, require Test::More 1.00
+
 0.05 2013 January 03
     - Use Module::Install
     - Convert to Github

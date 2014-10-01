@@ -5,7 +5,7 @@ use 5.006;
 
 use Time::HiRes();
 
-our $VERSION = "0.05";
+our $VERSION = '0.06';
 ## no critic (ProhibitAccessOfPrivateData )
 
 ##
@@ -24,7 +24,7 @@ sub new {
 
     $self->initialize();
 
-    $self->mark("INIT");
+    $self->mark('INIT');
 
     return $self;
 }
@@ -80,20 +80,20 @@ sub report {
     my $total_time = Time::HiRes::tv_interval($self->{times}->[0], $self->{times}->[$self->{count}-1]);
 
     $self->print("\n");
-    $self->print(ref($self) . " Report -- Total time: " . sprintf("%.4f", $total_time) . " secs");
+    $self->print(ref($self) . ' Report -- Total time: ' . sprintf('%.4f', $total_time) . ' secs');
     if ($args{collapse}) {
        $self->_calculate_collapsed;
 
-       $self->print("Count     Time    Percent");
-       $self->print("----------------------------------------------");
+       $self->print('Count     Time    Percent');
+       $self->print('----------------------------------------------');
 
        my $c = $self->{collapsed};
-       my $sort_by = $args{sort_by} || "time";
+       my $sort_by = $args{sort_by} || 'time';
        my @labels = sort { $c->{$b}->{$sort_by} <=> $c->{$a}->{$sort_by} } keys %$c;
        foreach my $label (@labels) {
            my $count = $c->{$label}->{count};
            my $time = $c->{$label}->{time};
-           my $msg = sprintf("%8s  %.4f  %5.2f%%  %s",
+           my $msg = sprintf('%8s  %.4f  %5.2f%%  %s',
                ($count, $time, (($time/$total_time)*100), $label));
            $self->print($msg);
        }
@@ -101,8 +101,8 @@ sub report {
     }
 
 
-    $self->print("Interval  Time    Percent");
-    $self->print("----------------------------------------------");
+    $self->print('Interval  Time    Percent');
+    $self->print('----------------------------------------------');
 
     ## sort interval structure based on value
 
@@ -119,7 +119,7 @@ sub report {
 
         next if ($i->{index} == 0);
 
-        my $msg = sprintf("%02d -> %02d  %.4f  %5.2f%%  %s -> %s",
+        my $msg = sprintf('%02d -> %02d  %.4f  %5.2f%%  %s -> %s',
             ($i->{index}-1), $i->{index}, $i->{value}, (($i->{value}/$total_time)*100),
             $self->{label}->{($i->{index}-1)}, $self->{label}->{$i->{index}});
 
@@ -190,15 +190,15 @@ Devel::Timer - Track and report execution time for parts of code
 
   my $t = Devel::Timer->new();
 
-  $t->mark("first db query");
+  $t->mark('first db query');
 
   ## do some work
 
-  $t->mark("second db query");
+  $t->mark('second db query');
 
   ## do some more work
 
-  $t->mark("end of second db query");
+  $t->mark('end of second db query');
 
   $t->report();
 
@@ -218,16 +218,16 @@ Second, markers are placed before and after pieces of code that need to be
 timed.  For this example, we are profiling the methods get_user_score() and
 get_average_user_score().
 
-  $t->mark("first db query");
+  $t->mark('first db query');
   &get_user_score($user);
 
-  $t->mark("second db query");
+  $t->mark('second db query');
   &get_average_user_score();
 
 Finally, at the end of the code that you want to profile, and end marker
 is place, and a report is generated on stderr.
 
-  $t->mark("END");
+  $t->mark('END');
   $t->report();
 
 Sample report:
@@ -281,7 +281,7 @@ Prints the report to STDOUT.  By default report() looks like this:
   02 -> 03  0.0000   0.00%  something end -> something begin
 
 Which is great for small or non-iterative programs, but if there's
-hundreds of loops of "something begin -> something end" the report gets
+hundreds of loops of 'something begin -> something end' the report gets
 very painful very quickly. :)
 
 In that scenario you might find B<collapse> useful:
@@ -320,16 +320,16 @@ These values are the exact same statistics that report() prints. get_stats()
 simply returns them to you so you can do something creative with them.
 
 For example, to get the cumulative stats for every time your program has
-specifically moved from mark("X") to mark("Y"), you can run this:
+specifically moved from mark('X') to mark('Y'), you can run this:
 
-  my ($time, $percent, $count) = $t->get_stats("X", "Y");
+  my ($time, $percent, $count) = $t->get_stats('X', 'Y');
 
-$time is the total number of seconds elapsed between "X" and "Y".
+$time is the total number of seconds elapsed between 'X' and 'Y'.
 
 $percent is the percentage of total program run time that you have spent between
-"X" and "Y".
+'X' and 'Y'.
 
-$count is the number of times your program has moved from "X" to "Y".
+$count is the number of times your program has moved from 'X' to 'Y'.
 
 =head2 shutdown
 
@@ -345,23 +345,23 @@ use strict;
 use Devel::Timer;
 use vars qw(@ISA);
 
-@ISA = ("Devel::Timer");
+@ISA = ('Devel::Timer');
 
 sub initialize
 {
-    my $log = "/tmp/timer.log";
-    open(LOG, ">>$log") or die("Unable to open [$log] for writing.");
+    my $log = '/tmp/timer.log';
+    open(my $LOG, '>>', $log) or die("Unable to open [$log] for writing.");
 }
 
 sub print
 {
     my($self, $msg) = @_;
-    print LOG $msg . "\n";
+    print $LOG $msg . "\n";
 }
 
 sub shutdown
 {
-    close LOG;
+    close $LOG;
 }
 
 You would then use the new module MyTimer exactly as you would use
@@ -369,9 +369,9 @@ Devel::Timer.
 
   use MyTimer;
   my $t = MyTimer->new();
-  $t->mark("about to do x");
-  $t->mark("about to do y");
-  $t->mark("done y");
+  $t->mark('about to do x');
+  $t->mark('about to do y');
+  $t->mark('done y');
   $t->report();
 
 =head1 TO DO

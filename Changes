@@ -1,5 +1,8 @@
 Revision history for Perl extension Devel::Timer.
 
+    - Remove executable bit from module.
+    - Remove old COPYING file.
+
 0.06 2014.10.01
     - Use subtests, require Test::More 1.00.
     - Fix boolean expression in test.

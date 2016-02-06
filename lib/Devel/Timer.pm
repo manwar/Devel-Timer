@@ -5,7 +5,7 @@ use 5.006;
 
 use Time::HiRes();
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 ## no critic (ProhibitAccessOfPrivateData )
 
 ##

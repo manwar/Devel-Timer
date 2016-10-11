@@ -5,7 +5,7 @@ use 5.006;
 
 use Time::HiRes();
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 ## no critic (ProhibitAccessOfPrivateData )
 
 ##
@@ -390,7 +390,11 @@ A to D. Depth aware reporting might be an interesting project to tackle.
 
 =head1 SEE ALSO
 
-Time::HiRes
+L<Time::HiRes>
+
+=head1 REPOSITORY
+
+L<https://github.com/manwar/Devel-Timer>
 
 =head1 COPYRIGHT
 
@@ -405,5 +409,6 @@ It is licensed under the same terms as Perl itself.
   Maintainer:  Gabor Szabo - gabor@pti.co.il
   Contributor: Jay Hannah  - jay@jays.net
 
-=cut
+  Currently maintained by Mohammad S Anwar (MANWAR) C<< <mohammad.anwar at yahoo.com> >>
 
+=cut

@@ -14,8 +14,6 @@ build_requires 'Capture::Tiny'             => '0.25';
 requires 'perl'         => '5.006';
 requires 'Time::HiRes'  => '0';
 
-repository 'https://github.com/szabgab/Devel-Timer';
+repository 'https://github.com/manwar/Devel-Timer';
 
 WriteAll;
-
-

@@ -1,5 +1,8 @@
 Revision history for Perl extension Devel::Timer.
 
+0.09  2016.10.19 MANWAR
+      - Tidied up pod document in general and documented method report().
+
 0.08  2016.10.11 MANWAR
       - Updated github repository details.
       - Made SEE ALSO entry a link.

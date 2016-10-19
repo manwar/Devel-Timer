@@ -5,7 +5,7 @@ use 5.006;
 
 use Time::HiRes();
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 ## no critic (ProhibitAccessOfPrivateData )
 
 ##
@@ -247,25 +247,35 @@ connections.
 
 =head1 METHODS
 
-=head2 new
+=head2 new()
 
 Create a new instance. No parameters are processed.
 
-=head2 initialize
+=head2 initialize()
 
 Empty method. Can be implemented in the subclass.
 
-=head2 mark(NAME)
+=head2 mark($name)
 
-Set a timestamp with a NAME.
+Set a timestamp with a C<$name>.
 
-=head2 print
+=head2 print()
 
 Prints to STDERR. Can be overridden in the subclass.
 
-=head2 report
+=head2 report(%args)
 
-Prints the report to STDOUT.  By default report() looks like this:
+Prints the report to STDOUT. The %args can have the following keys:
+
+    +----------+--------------------------+
+    | Keys     | Description              |
+    +----------+--------------------------+
+    | collapse | can be 0 or 1            |
+    |          |                          |
+    | sort_by  | can be 'time' or 'count' |
+    +----------+--------------------------+
+
+By default report() looks like this:
 
   $t->report;
 
@@ -312,7 +322,7 @@ descending instead if you want:
          1  0.0000   0.00%  INIT -> something begin
          1  1.0009  14.29%  something end -> END
 
-=head2 get_stats
+=head2 get_stats($start, $end)
 
 Returns the accumulated statistics for a specific a combination of mark()'s that
 have occurred while your program ran.
@@ -337,35 +347,32 @@ Empty method. Can be implemented in subclass.
 
 =head1 SUBCLASSING
 
-e.g.
+    package MyTimer;
 
-package MyTimer;
+    use strict;
+    use Devel::Timer;
+    use vars qw(@ISA);
 
-use strict;
-use Devel::Timer;
-use vars qw(@ISA);
+    @ISA = ('Devel::Timer');
 
-@ISA = ('Devel::Timer');
+    sub initialize
+    {
+        my $log = '/tmp/timer.log';
+        open(my $LOG, '>>', $log) or die("Unable to open [$log] for writing.");
+    }
 
-sub initialize
-{
-    my $log = '/tmp/timer.log';
-    open(my $LOG, '>>', $log) or die("Unable to open [$log] for writing.");
-}
+    sub print
+    {
+        my($self, $msg) = @_;
+        print $LOG $msg . "\n";
+    }
 
-sub print
-{
-    my($self, $msg) = @_;
-    print $LOG $msg . "\n";
-}
+    sub shutdown
+    {
+        close $LOG;
+    }
 
-sub shutdown
-{
-    close $LOG;
-}
-
-You would then use the new module MyTimer exactly as you would use
-Devel::Timer.
+You would then use the new module MyTimer exactly as you would use C<Devel::Timer>.
 
   use MyTimer;
   my $t = MyTimer->new();
@@ -376,7 +383,7 @@ Devel::Timer.
 
 =head1 TO DO
 
-Devel::Timer does not currently do any reporting or statistics of any kind
+C<Devel::Timer> does not currently do any reporting or statistics of any kind
 based on nested trees of mark() calls. So if your program runs these mark() calls:
 
   A
@@ -385,7 +392,7 @@ based on nested trees of mark() calls. So if your program runs these mark() call
   D
   E
 
-Devel::Timer never tells you anything about how much time you spent moving from
+C<Devel::Timer> never tells you anything about how much time you spent moving from
 A to D. Depth aware reporting might be an interesting project to tackle.
 
 =head1 SEE ALSO
@@ -396,7 +403,7 @@ L<Time::HiRes>
 
 L<https://github.com/manwar/Devel-Timer>
 
-=head1 COPYRIGHT
+=head1 LICENSE AND COPYRIGHT
 
 Jason Moore
 
@@ -409,6 +416,6 @@ It is licensed under the same terms as Perl itself.
   Maintainer:  Gabor Szabo - gabor@pti.co.il
   Contributor: Jay Hannah  - jay@jays.net
 
-  Currently maintained by Mohammad S Anwar (MANWAR) C<< <mohammad.anwar at yahoo.com> >>
+  Currently maintained by Mohammad S Anwar (MANWAR) - mohammad.anwar@yahoo.com
 
 =cut

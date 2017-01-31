@@ -1,11 +1,11 @@
 package Devel::Timer;
+
 use strict;
 use warnings;
 use 5.006;
 
 use Time::HiRes();
 
-our $VERSION = '0.09';
 ## no critic (ProhibitAccessOfPrivateData )
 
 ##

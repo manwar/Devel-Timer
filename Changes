@@ -1,5 +1,8 @@
 Revision history for Perl extension Devel::Timer.
 
+0.11  2017.01.31 MANWAR
+      - Fixed inconsistent version issue reported by CPANTS.
+
 0.10  2017.01.19 MANWAR
       - Moved to dzil for building distribution.
 

@@ -14,17 +14,27 @@ use Time::HiRes();
 
 sub new {
     my ($class) = @_;
-    my $self = {
-                times => [],
-                count => 0,
-                label => {},        ## index:label
-                };
+    my $self = {};
 
     bless $self, $class;
+
+    $self->_self();
 
     $self->initialize();
 
     $self->mark('INIT');
+
+    return $self;
+}
+
+sub _self {
+    my ($self) = @_;
+
+    %{$self} = (
+                times => [],
+                count => 0,
+                label => {},        ## index:label
+                );
 
     return $self;
 }
@@ -65,6 +75,16 @@ sub mark {
     $self->{label}->{$self->{count}} = $label;
 
     $self->{count}++;
+}
+
+##
+## reset all accumulated data
+##
+
+sub reset {
+    my ($self) = @_;
+
+    return $self->_self;
 }
 
 

@@ -1,6 +1,6 @@
+use strict;
 package Devel::Timer;
 
-use strict;
 use warnings;
 use 5.006;
 
